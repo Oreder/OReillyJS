@@ -170,3 +170,103 @@ String.method('trim', function(){
 });
 
 document.writeln('"' + "    neat    ".trim() + '"');
+
+/* ================================================================
+ * 				PART 07. Recursion 
+ * ================================================================
+ */
+
+/* 
+ *** Solution of a famous puzzle problem - The Towers of Hanoi
+ *
+ * The hanoi function moves a stack of discs from one post to another, 
+ * using the auxiliary post if necessary. It breaks the problem into 
+ * three subproblems. First, it uncovers the bottom disc by moving the
+ * substack above it to the auxiliary post. It can then move the bottom
+ * disc to the destination post. Finally, it can move the substack from 
+ * the auxiliary post to the destination post. The movement of the 
+ * substack is handled by calling itself recursively to work out those 
+ * subproblems.
+ */ 
+
+var hanoi = function(disc, src, aux, dst){
+	if (disc > 0){
+		hanoi(disc - 1, src, dst, aux);
+		document.writeln('Move disc ' + disc + 
+						 ' from ' + src + 
+						 ' to ' + dst);
+		hanoi(disc - 1, aux, src, dst);
+	}
+};
+
+hanoi(5, 'A', 'B', 'C');
+
+/*
+ * Recursive functions can be very effective in manipulating tree 
+ * structures such as the browser's Document Object Model (DOM).
+ */
+ 
+// Code View:
+// Define a walk_the_DOM function that visits every
+// node of the tree in HTML source order, starting
+// from some given node. It invokes a function,
+// passing it each node in turn. walk_the_DOM calls
+// itself to process each of the child nodes.
+
+var walk_the_DOM = function walk(node, func){
+	// do stuffs
+	func(node);
+	
+	// set new node = first child-node
+	node = node.firstChild;
+	
+	while (node){
+		// recursion
+		walk(node, func);
+		
+		node = node.nextSibling;
+	}
+};
+
+// Define a getElementsByAttribute function. It
+// takes an attribute name string and an optional
+// matching value. It calls walk_the_DOM, passing it a
+// function that looks for an attribute name in the
+// node. The matching nodes are accumulated in a
+// results array. (need test)
+
+var getElementsByAttribute = function(attrib, value){
+	var result = {};
+	
+	walk_the_DOM(document.body, function(node){
+		var actual = (node.nodeType === 1) && node.getAttribute(attrib);
+		if ((typeof actual === 'string') && 
+			(actual === value || typeof value !== 'string')){
+			result.push(node);
+		}
+	});
+	
+	return result;
+};
+
+// Make a factorial function with tail
+// recursion. It is tail recursive because
+// it returns the result of calling itself.
+// JavaScript does not currently optimize this form.
+
+/* version 01 -- more understanding */ 
+var fact = function(n){
+	function factorial_helper(n, res){
+		return (n < 2)? res : factorial_helper(n - 1, n * res);
+	}
+	
+	return factorial_helper(n, 1);
+};
+
+/* version 02 -- JS's style */
+var factorial = function factorial(n, res){
+	res = res || 1;
+	return (n < 2)? res : factorial(n - 1, n * res);
+};
+
+document.writeln(factorial(5));	// 120
