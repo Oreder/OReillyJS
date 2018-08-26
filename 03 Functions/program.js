@@ -1,36 +1,24 @@
-var app = {};
+/*
+ * Create a constructor function call Quo.
+ * It makes an object with a status property.
+ */
 
-// Create a variable called add and store a function
-// in it that adds two numbers.
-app.add = function (a, b) {
-	return a + b;
-};
-
-app.myObject = {
-	value: 0,
-	increment: function(inc){
-		this.value += (typeof inc === 'number')? inc : 1;
-	}
+var Quo = function(status){
+	this.status = status;
 }
 
-app.myObject.increment();
-document.writeln(app.myObject.value);		// 1
+/*
+ * Give all instance of Quo a public method
+ * called get_status.
+ */
 
-app.myObject.increment(-3);
-document.writeln(app.myObject.value);		// -2
-
-// double method
-app.myObject.double = function() {
-	var that = this;		// Workaround
-	
-	var helper = function(){
-		that.value = app.add(that.value, that.value)
-	}
-	
-	// Invoke helper as a function
-	helper();
+Quo.prototype.get_status = function(){
+	return this.status;
 }
 
-// Now let invoke double as a method
-app.myObject.double();
-document.writeln(app.myObject.value);		// -4
+/*
+ * Make an instance of Quo.
+ */
+
+var myQuo = new Quo("confused");
+document.writeln(myQuo.get_status());
