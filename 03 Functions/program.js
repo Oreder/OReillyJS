@@ -18,3 +18,19 @@ document.writeln(app.myObject.value);		// 1
 
 app.myObject.increment(-3);
 document.writeln(app.myObject.value);		// -2
+
+// double method
+app.myObject.double = function() {
+	var that = this;		// Workaround
+	
+	var helper = function(){
+		that.value = app.add(that.value, that.value)
+	}
+	
+	// Invoke helper as a function
+	helper();
+}
+
+// Now let invoke double as a method
+app.myObject.double();
+document.writeln(app.myObject.value);		// -4
