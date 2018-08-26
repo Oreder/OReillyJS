@@ -270,3 +270,97 @@ var factorial = function factorial(n, res){
 };
 
 document.writeln(factorial(5));	// 120
+
+/* ================================================================
+ * 				PART 08. Closure
+ * ================================================================
+ * Suppose we wanted to protect the value from unauthorized changes
+ */
+
+/* 
+ * Instead of initializing myObject with an object literal, we will
+ * initialize myObject by calling a function that returns an object 
+ * literal. That function defines a value variable. That variable is 
+ * always available to the increment and getValue methods, but the 
+ * function's scope keeps it hidden from the rest of the program. 
+ *
+ * Here, we are not assigning a function to myNewObject. We are 
+ * assigning the result of invoking that function. Notice the ( )
+ * on the last line. The function returns an object containing three 
+ * methods, and those methods continue to enjoy the privilege of 
+ * access to the value variable.
+ */
+ 
+var myNewObject = function(){
+	var value = 0;
+	return {
+		increment: function(inc){
+			value += (typeof inc === 'number')? inc : 1;
+		},
+		setValue: function(n){
+			value = (typeof n === 'number')? n : value;
+		},
+		getValue: function(){
+			return value;
+		}
+	}
+}();
+
+myNewObject.setValue(10);
+myNewObject.increment(-5);
+myNewObject.setValue('example');
+document.writeln(myNewObject.getValue());	// 5
+
+// Create a maker function called quo. It makes an
+// object with a get_status method and a private
+// status property.
+
+var newQuo = function(status){
+	return {
+		get_status: function(){
+			return status;
+		}
+	};
+};
+
+var testQuo = newQuo("amazing");
+document.writeln(testQuo.get_status());
+
+// Define a function that sets a DOM node's color
+// to yellow and then fades it to white.
+
+var fade = function(node){
+	var level = 1;
+	var step = function(){
+		var hex = level.toString(16);
+		node.style.backgroundColor = '#FFFF' + hex + hex;
+		if (level < 15){
+			level += 1;
+			setTimeout(step, 100);
+		}
+	};
+	setTimeout(step, 100);
+};
+
+fade(document.body);
+
+// Make a function that assigns event handler functions to an array of 
+// nodes the right way. When we click on a node, an alert box will 
+// display the ordinal of the node.
+
+var add_the_handlers = function(nodes){
+	var i;
+	for (i = 0; i < nodes.length; i += 1){
+		nodes[i].onclick = function(i){
+			return function(e){
+				alert(i);
+			};
+		}(i);
+	}
+};
+
+// Now, instead of assigning a function to onclick, we define a function 
+// and immediately invoke it, passing in i. That function will return an 
+// event handler function that is bound to the value of i that was  passed
+// in, not to the i defined in add_the_handlers. That returned function 
+// is assigned to onclick.
