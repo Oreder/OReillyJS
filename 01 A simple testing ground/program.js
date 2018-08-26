@@ -1,0 +1,1 @@
+document.writeln('A simple testing ground')
