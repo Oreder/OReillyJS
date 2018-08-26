@@ -1,4 +1,7 @@
-/*
+/* ================================================================
+ * 			PART 01. Function literal & Method invocation 
+ * ================================================================
+ *
  * Create a variable called add and store a function
  * in it that adds two numbers.
  */
@@ -36,9 +39,10 @@ myObject.double = function() {
 myObject.double();
 document.writeln(myObject.value);		// -4
 
-/*================================================================*/
-
-/*
+/* ================================================================
+ * 				PART 02. Constructor invocation 
+ * ================================================================
+ *
  * Create a constructor function call Quo.
  * It makes an object with a status property.
  */
@@ -63,9 +67,10 @@ Quo.prototype.get_status = function(){
 var myQuo = new Quo("confused");
 document.writeln(myQuo.get_status());
 
-/*================================================================*/
-
-/*
+/* ================================================================
+ * 				PART 03. Apply invocation 
+ * ================================================================
+ *
  * Make an array of 2 numbers and add them.
  */
  
@@ -87,3 +92,24 @@ var statusObject = {
 
 var status = Quo.prototype.get_status.apply(statusObject);
 document.writeln("New status is " + status);
+
+/* ================================================================
+ * 				PART 04. Arguments 
+ * ================================================================
+ *
+ * Make a function that adds a lot of stuff.
+ * Note that defining the variable sum inside of
+ * the function does not interfere with the sum
+ * defined outside of the function. The function
+ * only sees the inner one.
+ */
+ 
+var sum = function(){
+	var i, sum = 0;
+	for (i = 0; i < arguments.length; i += 1){
+		sum += arguments[i];
+	}
+	return sum;
+};
+
+document.writeln(sum(1, 2, 3, 4, 5, 6, 7, 8, 9));	// 45
