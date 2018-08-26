@@ -145,3 +145,28 @@ var try_it = function(){
 };
 
 try_it();
+
+/* ================================================================
+ * 				PART 06. Augumenting types 
+ * ================================================================
+ */
+
+Function.prototype.method = function(name, func){
+	if (!this.prototype[name]){
+		this.prototype[name] = func;
+	}
+	return this;
+};
+
+Number.method('integer', function(){
+	return Math[(this < 0)? 'ceil' : 'floor'](this);
+});
+
+document.writeln((-10 / 3).integer());	// -3
+
+// Using a regular expression
+String.method('trim', function(){
+	return this.replace(/^\s+|\s+$/g, '');
+});
+
+document.writeln('"' + "    neat    ".trim() + '"');
