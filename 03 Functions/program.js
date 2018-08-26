@@ -15,7 +15,7 @@ myObject = {
 	increment: function(inc){
 		this.value += (typeof inc === 'number')? inc : 1;
 	}
-}
+};
 
 myObject.increment();
 document.writeln(myObject.value);		// 1
@@ -33,7 +33,7 @@ myObject.double = function() {
 	
 	// Invoke helper as a function
 	helper();
-}
+};
 
 // Now let invoke double as a method
 myObject.double();
@@ -49,7 +49,7 @@ document.writeln(myObject.value);		// -4
 
 var Quo = function(status){
 	this.status = status;
-}
+};
 
 /*
  * Give all instance of Quo a public method
@@ -58,7 +58,7 @@ var Quo = function(status){
 
 Quo.prototype.get_status = function(){
 	return this.status;
-}
+};
 
 /*
  * Make an instance of Quo.
@@ -81,7 +81,7 @@ document.writeln(sum);
 // Make an object with a status memnber.
 var statusObject = {
 	status: 'A-OK'
-}
+};
 
 /*
  * statusObject does not inherit from Quo.prototype,
@@ -113,3 +113,35 @@ var sum = function(){
 };
 
 document.writeln(sum(1, 2, 3, 4, 5, 6, 7, 8, 9));	// 45
+
+/* ================================================================
+ * 				PART 05. Exceptions 
+ * ================================================================
+ *
+ * JavaScript provides an exception handling mechanism. Exceptions are
+ * unusual (but not completely unexpected) mishaps that interfere with
+ * the normal flow of a program. When such a mishap is detected, your
+ * program should throw an exception.
+ */
+ 
+var add = function(a, b){
+	if (typeof a !== 'number' || typeof b !== 'number'){
+		throw {
+			name: 'TypeError',
+			message: 'apply for only numbers'
+		}
+	}
+	return a + b;
+};
+
+// Make a try_it function that calls the new add
+// function incorrectly.
+var try_it = function(){
+	try {
+		add("seven");
+	} catch (e) {
+		document.writeln(e.name + ': ' + e.message);
+	}
+};
+
+try_it();
