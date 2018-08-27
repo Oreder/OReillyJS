@@ -374,10 +374,89 @@ var add_the_handlers = function(nodes){
 // Make an asynchronous request, providing a callback function that will 
 // be invoked when the server's response is received.
 
-request = prepare_the_request();
-send_request_asynchronously(req, func(response){
-	display(response);
-});
+// request = prepare_the_request();
+// send_request_asynchronously(request, func(response){
+	// display(response);
+// });
 
 // We pass a function parameter to the send_request_asynchronously 
 // function that will be called when the response is available.
+
+/* ================================================================
+ * 				PART 10. Module
+ * ================================================================
+ */
+ 
+ String.method('deentityify', function(){
+	// Hence, the entity table, which maps entity names to characters.
+	var entity = {
+		quote: '"',
+		lt: '<',
+		gt: '>'
+	};
+	
+	// Return the deentityify method.
+	// It calls the string replace method, looking for substrings that 
+	// start with '&' and end with ';'. If the characters in between 
+	// are in the entity table, then replace the entity with the 
+	// character from the table.
+	return function(){
+		return this.replace(/&([^&;]+);/g,
+			function(a, b){
+				var r = entity[b];
+				return (typeof r === 'string')? r : a;
+			}
+		);
+	};
+ }());
+ 
+// We immediately invoke the function we just made with the ( ) operator.
+// That invocation creates and returns the function that becomes the 
+// deentityify method.
+
+document.writeln(
+	'&lt;&quote;&gt;'.deentityify()
+);	// <">
+
+/*
+ * The general pattern of a module is a function that defines private 
+ * variables and functions; creates privileged functions which, through 
+ * closure, will have access to the private variables and functions; and 
+ * that returns the privileged functions or stores them in an accessible 
+ * place.
+ *
+ * Use of the module pattern can eliminate the use of global variables. 
+ * It promotes information hiding and other good design practices. It is 
+ * very effective in encapsulating applications and other singletons.
+ */
+
+var serial_maker = function(){
+	// Produce an object that produces unique strings. A
+	// unique string is made up of two parts: a prefix
+	// and a sequence number. The object comes with
+	// methods for setting the prefix and sequence
+	// number, and a genSym method that produces unique
+	// strings.
+	var prefix = '';
+	var sequence = 0;
+	
+	return {
+		setPrefix: function(p){
+			prefix = String(p);
+		},
+		setSequence: function(s){
+			sequence = s;
+		},
+		genSym: function(){
+			var result = prefix + sequence;
+			sequence += 1;	//?
+			return result;
+		}
+	};
+};
+
+var seqer = serial_maker();
+seqer.setPrefix('A');
+seqer.setSequence(200);
+var unique = seqer.genSym();
+document.writeln(unique + ' : ' + seqer.genSym());
