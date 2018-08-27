@@ -364,3 +364,20 @@ var add_the_handlers = function(nodes){
 // event handler function that is bound to the value of i that was  passed
 // in, not to the i defined in add_the_handlers. That returned function 
 // is assigned to onclick.
+
+
+/* ================================================================
+ * 				PART 09. Callbacks
+ * ================================================================
+ */
+
+// Make an asynchronous request, providing a callback function that will 
+// be invoked when the server's response is received.
+
+request = prepare_the_request();
+send_request_asynchronously(req, func(response){
+	display(response);
+});
+
+// We pass a function parameter to the send_request_asynchronously 
+// function that will be called when the response is available.
