@@ -474,26 +474,26 @@ document.writeln(unique + ' : ' + seqer.genSym());
  * in a single statement. 
  */
 
-getElement('myBoxDiv').
-	move(350, 150).
-	width(100).
-	height(100).
-	color('red').
-	border('10px outset').
-	padding('4px').
-	appendText("Please stand by").
-	on('mousedown', function(m){
-		this.startDrag(m, this.getNinth(m));
-	}).
-	on('mousemove', 'drag').
-	on('mouseup', 'stopDrag').
-	later(2000, function(){
-		this.
-			color('yellow').
-			setHTML("What hath God wraught?").
-			slide(400, 40, 200, 200);
-	}).
-	tip('This box is resizeable');
+// getElement('myBoxDiv').
+	// move(350, 150).
+	// width(100).
+	// height(100).
+	// color('red').
+	// border('10px outset').
+	// padding('4px').
+	// appendText("Please stand by").
+	// on('mousedown', function(m){
+		// this.startDrag(m, this.getNinth(m));
+	// }).
+	// on('mousemove', 'drag').
+	// on('mouseup', 'stopDrag').
+	// later(2000, function(){
+		// this.
+			// color('yellow').
+			// setHTML("What hath God wraught?").
+			// slide(400, 40, 200, 200);
+	// }).
+	// tip('This box is resizeable');
 	
 // In this example, the getElement function produces an object that 
 // gives functionality to the DOM element with id="myBoxDiv". The 
@@ -504,3 +504,24 @@ getElement('myBoxDiv').
 // Cascading can produce interfaces that are very expressive. It can 
 // help control the tendency to make interfaces that try to do too much 
 // at once.
+
+/* ================================================================
+ * 				PART 12. Curry
+ * ================================================================
+ * Functions are values, and we can manipulate function values in 
+ * interesting ways. Currying allows us to produce a new function
+ * by combining a function and an argument.
+ */
+ 
+Function.method('curry', function(){
+	var slice = Array.prototype.slice,
+		args = slice.apply(arguments),
+		that = this;
+		
+	return function(){
+		return that.apply(null, args.concat(slice.apply(arguments)));
+	};
+});
+
+var add2 = add.curry(2);
+document.writeln(add2(7));	// 9
