@@ -374,10 +374,10 @@ var add_the_handlers = function(nodes){
 // Make an asynchronous request, providing a callback function that will 
 // be invoked when the server's response is received.
 
-// request = prepare_the_request();
-// send_request_asynchronously(request, func(response){
-	// display(response);
-// });
+request = prepare_the_request();
+send_request_asynchronously(request, func(response){
+	display(response);
+});
 
 // We pass a function parameter to the send_request_asynchronously 
 // function that will be called when the response is available.
@@ -474,26 +474,26 @@ document.writeln(unique + ' : ' + seqer.genSym());
  * in a single statement. 
  */
 
-// getElement('myBoxDiv').
-	// move(350, 150).
-	// width(100).
-	// height(100).
-	// color('red').
-	// border('10px outset').
-	// padding('4px').
-	// appendText("Please stand by").
-	// on('mousedown', function(m){
-		// this.startDrag(m, this.getNinth(m));
-	// }).
-	// on('mousemove', 'drag').
-	// on('mouseup', 'stopDrag').
-	// later(2000, function(){
-		// this.
-			// color('yellow').
-			// setHTML("What hath God wraught?").
-			// slide(400, 40, 200, 200);
-	// }).
-	// tip('This box is resizeable');
+getElement('myBoxDiv').
+	move(350, 150).
+	width(100).
+	height(100).
+	color('red').
+	border('10px outset').
+	padding('4px').
+	appendText("Please stand by").
+	on('mousedown', function(m){
+		this.startDrag(m, this.getNinth(m));
+	}).
+	on('mousemove', 'drag').
+	on('mouseup', 'stopDrag').
+	later(2000, function(){
+		this.
+			color('yellow').
+			setHTML("What hath God wraught?").
+			slide(400, 40, 200, 200);
+	}).
+	tip('This box is resizeable');
 	
 // In this example, the getElement function produces an object that 
 // gives functionality to the DOM element with id="myBoxDiv". The 
@@ -525,3 +525,42 @@ Function.method('curry', function(){
 
 var add2 = add.curry(2);
 document.writeln(add2(7));	// 9
+
+/* ================================================================
+ * 				PART 13. Memoization
+ * ================================================================
+ *  The memoizer function will take an initial memo array and the 
+ * fundamental function. It returns a shell function that manages
+ * the memo store and that calls the fundamental function as needed.
+ * We pass the shell function and the function's parameters to the 
+ * fundamental function.
+ */
+ 
+var memoizer = function(memo, fundamental){
+	var shell = function(n){
+		var result = memo[n];
+		if (typeof result !== 'number'){
+			result = fundamental(shell, n);
+			memo[n] = result;
+		}
+		return result;
+	};
+
+	return shell;
+};
+ 
+// Define Fibonacci by memoizer
+var Fibonacci = memoizer([1, 1], function(shell, n){
+	return shell(n-1) + shell(n-2);
+});
+
+for (i = 0; i < 11; i += 1)
+	document.writeln('#Fibo[' + i + ']: ' + Fibonacci(i));
+
+// Define Factorial by memoizer
+var Factorial = memoizer([1, 1], function(shell, n){
+	return n * shell(n - 1);
+});
+
+for (i = 0; i < 25; i += 1)
+	document.writeln('#Fact(' + i + '): ' + Factorial(i));
